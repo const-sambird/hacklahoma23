@@ -12,7 +12,11 @@ class Level:
         self.world_shift = 0
         self.current_x = 0
 
+
     def setup_level(self, layout):
+        pygame.mixer.music.load('../music/world1.mp3')
+        pygame.mixer.music.play(-1)
+
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.stairs = pygame.sprite.GroupSingle()
