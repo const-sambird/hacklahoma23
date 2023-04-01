@@ -2,6 +2,7 @@ import pygame
 from tiles import Tile
 from player import Player
 from settings import tile_size, screen_width
+from stairs import Stairs
 
 class Level:
     def __init__(self, level_data, surface):
@@ -14,6 +15,8 @@ class Level:
     def setup_level(self, layout):
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
+        self.stairs = pygame.sprite.GroupSingle()
+
         for row_index, row in enumerate(layout):
             for col_index, cell in enumerate(row):
                 x = col_index * tile_size
@@ -24,6 +27,9 @@ class Level:
                 elif cell == 'P':
                     tile = Player((x, y))
                     self.player.add(tile)
+                if cell == "L":
+                    staircase = Stairs((x, y), tile_size)
+                    self.stairs.add(staircase)
 
     def scroll_x(self):
         player = self.player.sprite
@@ -81,8 +87,19 @@ class Level:
         if player.on_ceiling and player.direction.y > 0:
             player.on_ceiling = False
 
+    def go_stairs(self):
+        player = self.player.sprite
+
+        stair_sprite = self.stairs.sprites()[0]
+
+        if stair_sprite.rect.colliderect(player.rect):
+            print("test collide stairs")
 
     def run(self):
+
+        self.stairs.update(self.world_shift)
+        self.stairs.draw(self.display_surface)
+
         # draw tiles
         self.tiles.update(self.world_shift)
         self.tiles.draw(self.display_surface)
@@ -92,4 +109,6 @@ class Level:
         self.player.update()
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
+
+        self.go_stairs()
         self.player.draw(self.display_surface)
