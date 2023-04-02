@@ -19,6 +19,7 @@ class Level:
 
         self.world_shift = 0
         self.current_x = 0
+        self.basespeed = 8
 
         self.next_level = False
 
@@ -54,12 +55,12 @@ class Level:
                 elif cell == 'P':
                     tile = Player((x, y))
                     self.player.add(tile)
-                if cell == "L":
+                elif cell == 'S':
+                    tile = Celsius((x,y), tile_size)
+                    self.celsius.add(tile)
+                elif cell == "L":
                     staircase = Stairs((x, y), tile_size)
                     self.stairs.add(staircase)
-                if cell == 'S':
-                    celsius = Celsius((x,y),tile_size)
-                    self.celsius.add(celsius)
                 if cell == 'G':
                     chatgpt = Chatgpt((x,y),tile_size)
                     self.Chatgpt.add()
@@ -70,18 +71,17 @@ class Level:
         direction_x = player.direction.x
 
         if player_x < screen_width / 4 and direction_x < 0:
-            self.world_shift = 8
+            self.world_shift = 8 * player.boost
             player.speed = 0
         elif player_x > screen_width - (screen_width / 4) and direction_x > 0:
-            self.world_shift = -8
+            self.world_shift = -8 * player.boost
             player.speed = 0
         else:
             self.world_shift = 0
-            player.speed = 8
+            player.speed = 8 * player.boost
 
     def horizontal_movement_collision(self):
         player = self.player.sprite
-        celsius = self.celsius.sprite
         
         player.rect.x += player.direction.x * player.speed
         
@@ -105,8 +105,8 @@ class Level:
         # collision with powerup
         for sprite in self.celsius.sprites():
             if sprite.rect.colliderect(player.rect):
+                player.boost = 2
                 sprite.kill()
-                player.speed = player.speed * 2 
                 
     
     def vertical_movement_collision(self):
@@ -154,10 +154,14 @@ class Level:
         self.tiles.update(self.world_shift)
         self.tiles.draw(self.display_surface)
         self.scroll_x()
-
+        # draw celsius powerup 
+        self.celsius.update(self.world_shift)
+        self.celsius.draw(self.display_surface)
+        
         # draw player
         self.player.update()
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
 
         self.player.draw(self.display_surface)
+        

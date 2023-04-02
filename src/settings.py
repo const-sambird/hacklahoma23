@@ -33,7 +33,7 @@ level_map_3 = [
 'X                                            X',
 'X                          G                 X',
 'X             XX       X   XX                X',
-'X P          XXX   S   XX        XXX        LX',
+'X P          XXX  S    XX        XXX        LX',
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 ]
 
@@ -43,7 +43,7 @@ level_map_4 = [
 'X      X        X   X                        X',
 'X      X        X   X                        X',
 'X                                            X',
-'X      X   X        X                        X',
+'X      X   X        X   S                    X',
 'X      X   X        X  XXX                   X',
 'X      X   X        X                        X',
 'X P            G          S                 LX',

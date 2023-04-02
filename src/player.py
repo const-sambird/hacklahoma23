@@ -15,6 +15,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = 8
         self.gravity = 0.8
         self.jump_speed = -16
+        self.boost = 1
         self.keys_hist = pygame.key.get_pressed()
         self.dashes = 3
 
@@ -114,6 +115,7 @@ class Player(pygame.sprite.Sprite):
     def apply_gravity(self):
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
+        
     
     def jump(self):
         self.direction.y = self.jump_speed
