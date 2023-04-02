@@ -49,12 +49,12 @@ class Level:
                 elif cell == 'P':
                     tile = Player((x, y))
                     self.player.add(tile)
-                if cell == "L":
+                elif cell == 'S':
+                    tile = Celsius((x,y), tile_size)
+                    self.celsius.add(tile)
+                elif cell == "L":
                     staircase = Stairs((x, y), tile_size)
                     self.stairs.add(staircase)
-                if cell == 'S':
-                    celsius = Celsius((x,y),tile_size)
-                    self.celsius.add(celsius)
 
     def scroll_x(self):
         player = self.player.sprite
@@ -73,7 +73,6 @@ class Level:
 
     def horizontal_movement_collision(self):
         player = self.player.sprite
-        celsius = self.celsius.sprite
         
         player.rect.x += player.direction.x * player.speed
         
@@ -97,8 +96,8 @@ class Level:
         # collision with powerup
         for sprite in self.celsius.sprites():
             if sprite.rect.colliderect(player.rect):
+                player.speed = 8
                 sprite.kill()
-                player.speed = player.speed * 2 
                 
     
     def vertical_movement_collision(self):
@@ -146,10 +145,14 @@ class Level:
         self.tiles.update(self.world_shift)
         self.tiles.draw(self.display_surface)
         self.scroll_x()
-
+        # draw celsius powerup 
+        self.celsius.update(self.world_shift)
+        self.celsius.draw(self.display_surface)
+        
         # draw player
         self.player.update()
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
 
         self.player.draw(self.display_surface)
+        

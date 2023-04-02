@@ -17,7 +17,7 @@ level_map_2 = [
 'X                                            X',
 'X                                            X',
 'X                                            X',
-'X                                            X',
+'X              S                             X',
 'X              X                             X',
 'X             XXX                            X',
 'X P          XXXXX                          LX',
@@ -33,7 +33,7 @@ level_map_3 = [
 'X                                            X',
 'X                                            X',
 'X             XX       X   XX                X',
-'X P          XXX       XX        XXX        LX',
+'X P          XXX  S    XX        XXX        LX',
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 ]
 
@@ -43,7 +43,7 @@ level_map_4 = [
 'X      X        X   X                        X',
 'X      X        X   X                        X',
 'X                                            X',
-'X      X   X        X                        X',
+'X      X   X        X   S                    X',
 'X      X   X        X  XXX                   X',
 'X      X   X        X                        X',
 'X P                                         LX',
@@ -59,7 +59,7 @@ level_map_5 = [
 'X                               X',
 'X                               X',
 'X                               X',
-'X P                             X',
+'X P            S                X',
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 ]
 
