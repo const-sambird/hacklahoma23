@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 from tiles import Tile
 from player import Player
 from settings import tile_size, screen_width
@@ -7,7 +8,7 @@ from celsius import Celsius
 from chatgpt import Chatgpt
 from professor import Professor
 from parkingservicesAI import ParkingServicesAI
-from parkingservicesticket import ParkingServiceTicket
+from parkingservicesTicket import ParkingServiceTicket
 
 
 import random
@@ -59,7 +60,7 @@ class Level:
         self.celsius = pygame.sprite.Group()
         self.chatgpt = pygame.sprite.Group()
         self.parkingServicesAI = pygame.sprite.Group()
-        self.parkingServiceTicket= pygame.sprite.Group()
+        self.parkingServiceTicket = pygame.sprite.Group()
         self.boss = pygame.sprite.GroupSingle()
 
         for row_index, row in enumerate(layout):
@@ -79,15 +80,12 @@ class Level:
                     tile = Chatgpt((x,y), tile_size)
                     self.chatgpt.add(tile)
                 elif cell == 'O':
-                    professors = Professor((x,y),tile_size)
+                    professors = Professor((x,y))
                     self.professors.add(professors) 
                 elif cell == 'A':
                     parkingServicesAI = ParkingServicesAI((x,y),tile_size)
                     self.parkingServicesAI.add(parkingServicesAI) 
                 # make rng
-                elif cell == 'A':
-                    parkingServiceTicket = ParkingServiceTicket(ParkingServiceTicket(x-1,y),tile_size)
-                    self.parkingServiceTicket.add(parkingServiceTicket) 
                 elif cell == "L":
                     staircase = Stairs((x, y), tile_size)
                     self.stairs.add(staircase)
@@ -277,7 +275,13 @@ class Level:
         self.display_surface.blit(lives_text, (3 * screen_width / 8, 100))
         self.display_surface.blit(tick_text, (5 * screen_width / 8, 100))
 
-
+    def throw_ticket(self):
+        for sprite in self.parkingServicesAI.sprites():
+            roll = randint(1, 100)
+            # print(roll)
+            if roll == 4:
+                ticket = ParkingServiceTicket((sprite.rect.x - tile_size, sprite.rect.y), tile_size)
+                self.parkingServiceTicket.add(ticket)
 
     def run(self):
         self.stairs.update(self.world_shift)
@@ -312,7 +316,7 @@ class Level:
         self.parkingServicesAI.draw(self.display_surface)
         
         # draw parking service ticket
-        self.parkingServiceTicket.update(self.world_shift)
+        self.throw_ticket()
         self.parkingServiceTicket.draw(self.display_surface)
         
 
