@@ -135,13 +135,13 @@ class Level:
                     if professor.direction < 0:
                         professor.rect.left = sprite.rect.right
                         professor.on_left = True
-                        self.current_x = professor.rect.left
+                        professor.on_right = False
                         professor.direction = -professor.direction
                     
                     elif professor.direction > 0:
                         professor.rect.right = sprite.rect.left
-                        professor.on_Right = True
-                        self.current_x = professor.rect.right
+                        professor.on_right = True
+                        professor.on_left = False
                         professor.direction = -professor.direction
                 
     
