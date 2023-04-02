@@ -23,6 +23,7 @@ class Player(pygame.sprite.Sprite):
         self.on_ceiling = False
         self.on_left = False
         self.on_right = False
+    
 
     def import_character_assets(self):
         character_path = '../assets/character/'
@@ -78,6 +79,9 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
+        if keys[pygame.K_c]:
+            self.direction.x *= 5
+
         if keys[pygame.K_SPACE] and self.on_ground:
 
             pygame.mixer.Sound.play(self.jump_sound)
@@ -97,6 +101,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.state = 'idle'
             self.animation_speed = 0.15
+        
 
     def apply_gravity(self):
         self.direction.y += self.gravity
