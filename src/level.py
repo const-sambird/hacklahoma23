@@ -4,19 +4,33 @@ from player import Player
 from settings import tile_size, screen_width
 from stairs import Stairs
 
+songs = ['../music/world_1.mp3', '../music/world_2.mp3', '../music/cynthia.mp3']
+
 
 class Level:
-    def __init__(self, level_data, surface):
+    def __init__(self, level_data, surface, level_index):
+        self.setup_level(level_data, level_index)
         self.display_surface = surface
-        self.setup_level(level_data)
+        self.level_index = level_index
 
         self.world_shift = 0
         self.current_x = 0
 
         self.next_level = False
 
-    def setup_level(self, layout):
-        pygame.mixer.music.load('../music/world1.mp3')
+    def setup_level(self, layout, level_index):
+        print(level_index)
+        if (level_index == 1):
+            pygame.mixer.music.load('../music/world_1.mp3')
+        elif (level_index == 2):
+            pygame.mixer.music.load('../music/world_2.mp3')
+        elif (level_index == 2):
+            pygame.mixer.music.load('../music/world_3.mp3')
+        elif (level_index == 2):
+            pygame.mixer.music.load('../music/world_4.mp3')
+        elif (level_index == 5):
+            pygame.mixer.music.load('../music/cynthia.mp3')
+
         pygame.mixer.music.play(-1)
 
         self.tiles = pygame.sprite.Group()
@@ -100,6 +114,7 @@ class Level:
 
         if stair_sprite.rect.colliderect(player.rect):
             self.next_level = True
+            pygame.mixer.pause()
             #print(main.level_number)
 
     def run(self):
