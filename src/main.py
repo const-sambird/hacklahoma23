@@ -29,7 +29,6 @@ while True:
         cap = cv2.VideoCapture('../assets/cutscene.mov')
         success, img = cap.read()
         shape = img.shape[1::-1]
-        print(shape)
         while success:
             clock.tick(60)
             success, img = cap.read()
