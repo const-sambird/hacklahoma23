@@ -6,6 +6,9 @@ from stairs import Stairs
 from celsius import Celsius
 from chatgpt import Chatgpt
 from professor import Professor
+from parkingservicesAI import ParkingServicesAI
+from parkingservicesticket import ParkingServiceTicket
+
 
 songs = ['../music/world_1.mp3', '../music/world_2.mp3', '../music/cynthia.mp3']
 
@@ -47,6 +50,9 @@ class Level:
         self.stairs = pygame.sprite.GroupSingle()
         self.celsius = pygame.sprite.Group()
         self.chatgpt = pygame.sprite.Group()
+        self.parkingServicesAI = pygame.sprite.Group()
+        self.parkingServiceTicket= pygame.sprite.Group()
+        
 
         for row_index, row in enumerate(layout):
             for col_index, cell in enumerate(row):
@@ -67,6 +73,13 @@ class Level:
                 elif cell == 'O':
                     professors = Professor((x,y),tile_size)
                     self.professors.add(professors) 
+                elif cell == 'A':
+                    parkingServicesAI = ParkingServicesAI((x,y),tile_size)
+                    self.parkingServicesAI.add(parkingServicesAI) 
+                # make rng
+                elif cell == 'A':
+                    parkingServiceTicket = ParkingServiceTicket(ParkingServiceTicket(x-1,y),tile_size)
+                    self.parkingServiceTicket.add(parkingServiceTicket) 
                 elif cell == "L":
                     staircase = Stairs((x, y), tile_size)
                     self.stairs.add(staircase)
@@ -89,7 +102,6 @@ class Level:
 
     def horizontal_movement_collision(self):
         player = self.player.sprite
-        professors = self.professors.sprites()
         
         player.rect.x += player.direction.x * player.speed
 
@@ -143,7 +155,18 @@ class Level:
                         professor.on_Right = True
                         self.current_x = professor.rect.right
                         professor.direction = -professor.direction
-                
+        # updates the direction and speed of each professor sprite
+        for parkingServiceTicket in self.parkingServiceTicket.sprites():
+                parkingServiceTicket.rect.x += parkingServiceTicket.direction * parkingServiceTicket.speed
+        
+        # collsion funtion for tickets
+        for sprite in self.tiles.sprites():
+            for parkingServiceTicket in self.parkingServiceTicket.sprites():
+                if sprite.rect.colliderect(parkingServiceTicket.rect):
+                    parkingServiceTicket.kill()
+                    parkingServiceTicket.here = 0
+            
+        
     
     def vertical_movement_collision(self):
         player = self.player.sprite
@@ -203,6 +226,14 @@ class Level:
          # draw professors 
         self.professors.update(self.world_shift)
         self.professors.draw(self.display_surface)
+        
+        # draw parking service 
+        self.parkingServicesAI.update(self.world_shift)
+        self.parkingServicesAI.draw(self.display_surface)
+        
+        # draw parking service ticket
+        self.parkingServiceTicket.update(self.world_shift)
+        self.parkingServiceTicket.draw(self.display_surface)
         
         # draw player
         self.player.update()
