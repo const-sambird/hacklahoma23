@@ -77,6 +77,10 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 0
 
         if keys[pygame.K_SPACE] and self.on_ground:
+            jump_sound = pygame.mixer.Sound("../music/jump.mp3")
+
+            pygame.mixer.Sound.play(jump_sound)
+
             self.jump()
     
     def get_state(self):
