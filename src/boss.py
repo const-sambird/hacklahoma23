@@ -25,7 +25,7 @@ class Boss(pygame.sprite.Sprite):
         self.on_right = False
 
     def import_character_assets(self):
-        path = '../assets/professor/'
+        path = '../assets/boss/'
         self.animations = import_folder(path)
 
     def animate(self):
