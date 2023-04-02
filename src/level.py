@@ -10,11 +10,15 @@ from parkingservicesAI import ParkingServicesAI
 from parkingservicesticket import ParkingServiceTicket
 
 
+import random
+
 songs = ['../music/world_1.mp3', '../music/world_2.mp3', '../music/cynthia.mp3']
 
+#from chatgpt import Chatgpt
+from boss import Boss
 
 class Level:
-    def __init__(self, level_data, surface, level_index):
+    def __init__(self, level_data, surface, level_index, lives):
         self.display_surface = surface
         self.level_index = level_index
 
@@ -24,6 +28,7 @@ class Level:
         self.world_shift = 0
         self.current_x = 0
         self.basespeed = 8
+        self.lives = lives
 
         self.next_level = False
 
@@ -38,6 +43,8 @@ class Level:
             pygame.mixer.music.load('../music/world_4.mp3')
         elif (self.level_index == 5):
             pygame.mixer.music.load('../music/cynthia.mp3')
+        
+        self.font = pygame.font.Font('../assets/font.ttf', 32)
 
         pygame.mixer.music.play(-1)
 
@@ -52,7 +59,7 @@ class Level:
         self.chatgpt = pygame.sprite.Group()
         self.parkingServicesAI = pygame.sprite.Group()
         self.parkingServiceTicket= pygame.sprite.Group()
-        
+        self.boss = pygame.sprite.GroupSingle()
 
         for row_index, row in enumerate(layout):
             for col_index, cell in enumerate(row):
@@ -83,7 +90,12 @@ class Level:
                 elif cell == "L":
                     staircase = Stairs((x, y), tile_size)
                     self.stairs.add(staircase)
-                
+                elif cell == "B":
+                    boss_sprite = Boss((x, y))
+                    self.boss.add(boss_sprite)
+                # if cell == 'G':
+                #     chatgpt = Chatgpt((x,y),tile_size)
+                #     self.Chatgpt.add()
 
     def scroll_x(self):
         player = self.player.sprite
@@ -107,7 +119,7 @@ class Level:
 
         # have powerups expired?
         if pygame.time.get_ticks() - player.boosted_at > 3000:
-            player.boost = 1        
+            player.boost = 1
 
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(player.rect):
@@ -131,7 +143,7 @@ class Level:
                 player.boost = 2
                 player.boosted_at = pygame.time.get_ticks()
                 sprite.kill()
-        
+
         for sprite in self.chatgpt.sprites():
             if sprite.rect.colliderect(player.rect):
                 player.dashes += 1
@@ -140,6 +152,7 @@ class Level:
         # updates the direction and speed of each professor sprite
         for professor in self.professors.sprites():
                 professor.rect.x += professor.direction * professor.speed
+
         # collision function for professors
         for sprite in self.tiles.sprites():
             for professor in self.professors.sprites():
@@ -147,13 +160,13 @@ class Level:
                     if professor.direction < 0:
                         professor.rect.left = sprite.rect.right
                         professor.on_left = True
-                        self.current_x = professor.rect.left
+                        professor.on_right = False
                         professor.direction = -professor.direction
-                    
+
                     elif professor.direction > 0:
                         professor.rect.right = sprite.rect.left
-                        professor.on_Right = True
-                        self.current_x = professor.rect.right
+                        professor.on_right = True
+                        professor.on_left = False
                         professor.direction = -professor.direction
         # updates the direction and speed of each professor sprite
         for parkingServiceTicket in self.parkingServiceTicket.sprites():
@@ -168,6 +181,45 @@ class Level:
             
         
     
+
+        # updates the direction and speed of each professor sprite
+        for boss in self.boss.sprites():
+            boss.speed = random.randint(6,12)
+            boss.rect.x += boss.direction * boss.speed
+            for sprite in self.tiles.sprites():
+                if sprite.rect.colliderect(boss.rect):
+                    if boss.direction < 0:
+                        boss.rect.left = sprite.rect.right
+                        boss.on_left = True
+                        boss.on_right = False
+                        boss.direction = -boss.direction
+
+                    elif boss.direction > 0:
+                        boss.rect.right = sprite.rect.left
+                        boss.on_right = True
+                        boss.on_left = False
+                        boss.direction = -boss.direction
+
+            if player.rect.colliderect(boss.rect):
+
+                pygame.quit()
+
+        # # collision function for professors
+        # for sprite in self.tiles.sprites():
+        #     for boss in self.boss.sprites():
+        #         if sprite.rect.colliderect(boss.rect):
+        #             if boss.direction < 0:
+        #                 boss.rect.left = sprite.rect.right
+        #                 boss.on_left = True
+        #                 boss.on_right = False
+        #                 boss.direction = -boss.direction
+        #
+        #             elif boss.direction > 0:
+        #                 boss.rect.right = sprite.rect.left
+        #                 boss.on_right = True
+        #                 boss.on_left = False
+        #                 boss.direction = -boss.direction
+
     def vertical_movement_collision(self):
         player = self.player.sprite
         player.apply_gravity()
@@ -183,6 +235,12 @@ class Level:
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
                     player.on_ceiling = True
+
+        for boss in self.boss.sprites():
+            if boss.rect.colliderect(player.rect):
+                if player.direction.y > 0:
+                    boss.kill()
+                    player.jump()
         
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False
@@ -200,6 +258,26 @@ class Level:
             self.next_level = True
             pygame.mixer.pause()
             #print(main.level_number)
+    
+    def go_die(self):
+        self.dead = True
+        pygame.mixer.pause()
+    
+    def draw_overlay(self):
+        player = self.player.sprite
+        dashes = player.dashes
+        lives = self.lives
+        tick = pygame.time.get_ticks() # replace
+
+        dashes_text = self.font.render("DASH " + str(dashes), False, 'white')
+        lives_text = self.font.render("LIFE " + str(lives), False, 'white')
+        tick_text = self.font.render("TICK " + str(tick), False, 'white')
+
+        self.display_surface.blit(dashes_text, (screen_width / 8, 25))
+        self.display_surface.blit(lives_text, (3 * screen_width / 8, 25))
+        self.display_surface.blit(tick_text, (5 * screen_width / 8, 25))
+
+
 
     def run(self):
         self.stairs.update(self.world_shift)
@@ -210,20 +288,22 @@ class Level:
         except:
             pass
 
+        self.draw_overlay()
+
         # draw tiles
         self.tiles.update(self.world_shift)
         self.tiles.draw(self.display_surface)
         self.scroll_x()
-        
+
         # draw celsius powerup 
         self.celsius.update(self.world_shift)
         self.celsius.draw(self.display_surface)
-        
-        # draw celsius powerup 
+
+        # draw celsius powerup
         self.chatgpt.update(self.world_shift)
         self.chatgpt.draw(self.display_surface)
-        
-         # draw professors 
+
+         # draw professors
         self.professors.update(self.world_shift)
         self.professors.draw(self.display_surface)
         
@@ -235,6 +315,11 @@ class Level:
         self.parkingServiceTicket.update(self.world_shift)
         self.parkingServiceTicket.draw(self.display_surface)
         
+
+        # draw professor
+        self.boss.update(self.world_shift)
+        self.boss.draw(self.display_surface)
+
         # draw player
         self.player.update()
         self.horizontal_movement_collision()

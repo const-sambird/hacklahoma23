@@ -59,7 +59,7 @@ level_map_5 = [
 'X                               X',
 'X                               X',
 'X                               X',
-'X P       G      S   A  O       X',
+'X P       G      S   A  O   B   X',
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 ]
 
