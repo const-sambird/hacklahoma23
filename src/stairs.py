@@ -3,8 +3,7 @@ import pygame
 class Stairs(pygame.sprite.Sprite):
     def __init__(self, pos, size):
         super().__init__()
-        self.image = pygame.Surface((size, size))
-        self.image.fill('brown')
+        self.image = pygame.image.load('../assets/tiles/stairs.png').convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
 
     def update(self, x_shift):

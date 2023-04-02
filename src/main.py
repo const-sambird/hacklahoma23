@@ -11,7 +11,7 @@ clock = pygame.time.Clock()
 levels = [level_map_1, level_map_2, level_map_3, level_map_4, level_map_5]
 level_index = 1
 
-level = Level(levels[level_index], screen, level_index)
+level = Level(levels[level_index - 1], screen, level_index)
 
 while True:
     for event in pygame.event.get():
