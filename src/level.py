@@ -4,6 +4,7 @@ from player import Player
 from settings import tile_size, screen_width
 from stairs import Stairs
 from celsius import Celsius
+from chatgpt import Chatgpt
 
 songs = ['../music/world_1.mp3', '../music/world_2.mp3', '../music/cynthia.mp3']
 
@@ -55,6 +56,9 @@ class Level:
                 if cell == 'S':
                     celsius = Celsius((x,y),tile_size)
                     self.celsius.add(celsius)
+                if cell == 'G':
+                    chatgpt = Chatgpt((x,y),tile_size)
+                    self.Chatgpt.add()
 
     def scroll_x(self):
         player = self.player.sprite
