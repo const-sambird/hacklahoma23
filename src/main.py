@@ -13,6 +13,8 @@ level_index = 1
 
 level = Level(levels[level_index - 1], screen, level_index)
 
+lives = 5
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -43,3 +45,8 @@ while True:
         if (level_index <= 5):
             level_index += 1
             level = Level(levels[level_index - 1], screen, level_index)
+    
+    if level.dead:
+        lives -= 1
+        level_index = 1
+        level = Level(levels[level_index - 1], screen, level_index, lives)

@@ -19,6 +19,7 @@ class Player(pygame.sprite.Sprite):
         self.boosted_at = 0
         self.keys_hist = pygame.key.get_pressed()
         self.dashes = 3
+        self.lives = 5
 
         # player appearance
         self.state = 'idle'

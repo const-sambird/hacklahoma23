@@ -11,7 +11,7 @@ songs = ['../music/world_1.mp3', '../music/world_2.mp3', '../music/cynthia.mp3']
 
 
 class Level:
-    def __init__(self, level_data, surface, level_index):
+    def __init__(self, level_data, surface, level_index, lives):
         self.display_surface = surface
         self.level_index = level_index
 
@@ -21,6 +21,7 @@ class Level:
         self.world_shift = 0
         self.current_x = 0
         self.basespeed = 8
+        self.lives = lives
 
         self.next_level = False
 
@@ -35,6 +36,8 @@ class Level:
             pygame.mixer.music.load('../music/world_4.mp3')
         elif (self.level_index == 5):
             pygame.mixer.music.load('../music/cynthia.mp3')
+        
+        self.font = pygame.font.Font('../assets/font.ttf', 32)
 
         pygame.mixer.music.play(-1)
 
@@ -177,6 +180,26 @@ class Level:
             self.next_level = True
             pygame.mixer.pause()
             #print(main.level_number)
+    
+    def go_die(self):
+        self.dead = True
+        pygame.mixer.pause()
+    
+    def draw_overlay(self):
+        player = self.player.sprite
+        dashes = player.dashes
+        lives = self.lives
+        tick = pygame.time.get_ticks() # replace
+
+        dashes_text = self.font.render("DASH " + str(dashes), False, 'white')
+        lives_text = self.font.render("LIFE " + str(lives), False, 'white')
+        tick_text = self.font.render("TICK " + str(tick), False, 'white')
+
+        self.display_surface.blit(dashes_text, (screen_width / 8, 25))
+        self.display_surface.blit(lives_text, (3 * screen_width / 8, 25))
+        self.display_surface.blit(tick_text, (5 * screen_width / 8, 25))
+
+
 
     def run(self):
         self.stairs.update(self.world_shift)
@@ -186,6 +209,8 @@ class Level:
             self.go_stairs()
         except:
             pass
+
+        self.draw_overlay()
 
         # draw tiles
         self.tiles.update(self.world_shift)
