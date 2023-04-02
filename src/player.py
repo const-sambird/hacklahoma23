@@ -15,6 +15,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = 8
         self.gravity = 0.8
         self.jump_speed = -16
+        self.boost = 1
 
         # player appearance
         self.state = 'idle'

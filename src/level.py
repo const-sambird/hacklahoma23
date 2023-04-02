@@ -16,6 +16,7 @@ class Level:
 
         self.world_shift = 0
         self.current_x = 0
+        self.basespeed = 8
 
         self.next_level = False
 
@@ -62,14 +63,14 @@ class Level:
         direction_x = player.direction.x
 
         if player_x < screen_width / 4 and direction_x < 0:
-            self.world_shift = 8
+            self.world_shift = 8 * player.boost
             player.speed = 0
         elif player_x > screen_width - (screen_width / 4) and direction_x > 0:
-            self.world_shift = -8
+            self.world_shift = -8 * player.boost
             player.speed = 0
         else:
             self.world_shift = 0
-            player.speed = 8
+            player.speed = 8 * player.boost
 
     def horizontal_movement_collision(self):
         player = self.player.sprite
@@ -96,7 +97,7 @@ class Level:
         # collision with powerup
         for sprite in self.celsius.sprites():
             if sprite.rect.colliderect(player.rect):
-                player.speed = 8
+                player.boost = 2
                 sprite.kill()
                 
     
