@@ -20,7 +20,6 @@ class Level:
         self.next_level = False
 
     def setup_level(self, layout, level_index):
-        print(level_index)
         if (level_index == 1):
             pygame.mixer.music.load('../music/world_1.mp3')
         elif (level_index == 2):

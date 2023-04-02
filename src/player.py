@@ -15,6 +15,8 @@ class Player(pygame.sprite.Sprite):
         self.speed = 8
         self.gravity = 0.8
         self.jump_speed = -16
+        self.keys_hist = pygame.key.get_pressed()
+        self.dashes = 3
 
         # player appearance
         self.state = 'idle'
@@ -34,6 +36,7 @@ class Player(pygame.sprite.Sprite):
             self.animations[animation] = import_folder(full_path)
         
         self.jump_sound = pygame.mixer.Sound("../music/jump.mp3")
+        self.dash_sound = pygame.mixer.Sound("../music/dash.mp3")
 
     def animate(self):
         animation = self.animations[self.state]
@@ -79,14 +82,19 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
-        if keys[pygame.K_c]:
-            self.direction.x *= 5
+        if keys[pygame.K_c] and (keys[pygame.K_c] != self.keys_hist[pygame.K_c]) and self.direction.x != 0 and self.dashes > 0:
+            pygame.mixer.Sound.play(self.dash_sound)
+            self.direction.x *= 15
+            self.dashes -= 1
 
         if keys[pygame.K_SPACE] and self.on_ground:
 
             pygame.mixer.Sound.play(self.jump_sound)
 
             self.jump()
+
+        self.keys_hist = keys
+
     
     def get_state(self):
         if self.direction.y < 0:
