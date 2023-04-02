@@ -57,6 +57,7 @@ class Level:
 
     def setup_level(self, layout):
 
+        # initializing sprites
         self.tiles = pygame.sprite.Group()
         self.professors = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
@@ -67,7 +68,8 @@ class Level:
         self.parkingServiceTicket = pygame.sprite.Group()
         self.boss = pygame.sprite.GroupSingle()
         self.josh = pygame.sprite.GroupSingle()
-
+        
+        # iterates throught the rows and columns of setting to generate the characters
         for row_index, row in enumerate(layout):
             for col_index, cell in enumerate(row):
                 x = col_index * tile_size
@@ -90,7 +92,6 @@ class Level:
                 elif cell == 'A':
                     parkingServicesAI = ParkingServicesAI((x,y), tile_size)
                     self.parkingServicesAI.add(parkingServicesAI) 
-                # make rng
                 elif cell == "L":
                     staircase = Stairs((x, y), tile_size)
                     self.stairs.add(staircase)
@@ -101,7 +102,8 @@ class Level:
                 #     chatgpt = Chatgpt((x,y),tile_size)
                 #     self.Chatgpt.add()
 
-    def scroll_x(self):
+    def scroll_x(self): # instead of player moving at the end of the screen, the background moves
+                        # to simulate movement
         player = self.player.sprite
         player_x = player.rect.centerx
         direction_x = player.direction.x

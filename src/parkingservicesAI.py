@@ -10,7 +10,7 @@ class ParkingServicesAI(pygame.sprite.Sprite):
         self.image = self.animations[self.frame_index]
         self.rect = self.image.get_rect(midtop = pos)
         
-         # movement
+        
         
         # functionality 
         self.here = 1 # checks if the ticket has been killed

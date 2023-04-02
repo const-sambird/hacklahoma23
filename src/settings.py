@@ -1,3 +1,4 @@
+# layouts for each level along with data for tiles
 level_map_1 = [
 'XX                                          XX',
 'XX                               A   L      XX',

@@ -21,7 +21,7 @@ y = (screen_height - image_height) / 2
 levels = [level_map_1, level_map_2, level_map_3, level_map_4, level_map_5]
 level_index = 1
 
-lives = 3
+lives = 5
 level = Level(levels[level_index - 1], screen, level_index, lives)
 
 

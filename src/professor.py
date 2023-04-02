@@ -23,11 +23,11 @@ class Professor(pygame.sprite.Sprite):
         self.on_left = False
         self.on_right = False
     
-    def import_character_assets(self):
+    def import_character_assets(self): # picture of the professor to be used in game
         path = '../assets/professor/'
         self.animations = import_folder(path)
     
-    def animate(self):
+    def animate(self): # animations for the professor when he moves
         animation = self.animations
 
         self.frame_index += self.animation_speed
@@ -43,10 +43,10 @@ class Professor(pygame.sprite.Sprite):
             flipped_image = pygame.transform.flip(image, True, False)
             self.image = flipped_image
     
-    def apply_gravity(self):
+    def apply_gravity(self): # applies gravity to the professor
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
 
-    def update(self, x_shift):
+    def update(self, x_shift): 
         self.rect.x += x_shift
         self.animate()

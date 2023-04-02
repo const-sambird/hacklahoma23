@@ -24,11 +24,11 @@ class ParkingServiceTicket(pygame.sprite.Sprite):
         self.on_left = False
         self.on_right = False
     
-    def import_character_assets(self):
+    def import_character_assets(self): # picture of the tickets to be used in game
         path = '../assets/projectile/'
         self.animations = import_folder(path)
 
-    def animate(self):
+    def animate(self): # animation of the services ticket AI shooting the tickets
         animation = self.animations
 
         self.frame_index += self.animation_speed
