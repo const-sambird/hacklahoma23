@@ -24,13 +24,13 @@ class Level:
     def load_assets(self):
         if (self.level_index == 1):
             pygame.mixer.music.load('../music/world_1.mp3')
-        elif (level_index == 2):
+        elif (self.level_index == 2):
             pygame.mixer.music.load('../music/world_2.mp3')
-        elif (level_index == 3):
+        elif (self.level_index == 3):
             pygame.mixer.music.load('../music/world_3.mp3')
-        elif (level_index == 4):
+        elif (self.level_index == 4):
             pygame.mixer.music.load('../music/world_4.mp3')
-        elif (level_index == 5):
+        elif (self.level_index == 5):
             pygame.mixer.music.load('../music/cynthia.mp3')
 
         pygame.mixer.music.play(-1)
