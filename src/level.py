@@ -170,14 +170,16 @@ class Level:
 
         # updates the direction and speed of each professor sprite
         for parkingServiceTicket in self.parkingServiceTicket.sprites():
-                parkingServiceTicket.rect.x += parkingServiceTicket.direction * parkingServiceTicket.speed
+            parkingServiceTicket.rect.x += parkingServiceTicket.direction * parkingServiceTicket.speed
         
-        # collsion funtion for tickets
-        for sprite in self.tiles.sprites():
-            for parkingServiceTicket in self.parkingServiceTicket.sprites():
+            # collsion funtion for tickets
+            for sprite in self.tiles.sprites():
                 if sprite.rect.colliderect(parkingServiceTicket.rect):
                     parkingServiceTicket.kill()
                     parkingServiceTicket.here = 0
+
+            if parkingServiceTicket.rect.colliderect(player.rect):
+                self.go_die()
             
         
     
