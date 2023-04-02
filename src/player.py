@@ -82,12 +82,16 @@ class Player(pygame.sprite.Sprite):
     def get_state(self):
         if self.direction.y < 0:
             self.state = 'jump'
+            self.animation_speed = 0.1
         elif self.direction.y > self.gravity:
             self.state = 'fall'
+            self.animation_speed = 0.1
         elif self.direction.x != 0:
             self.state = 'run'
+            self.animation_speed = 0.3
         else:
             self.state = 'idle'
+            self.animation_speed = 0.15
 
     def apply_gravity(self):
         self.direction.y += self.gravity
