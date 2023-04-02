@@ -44,6 +44,7 @@ class Level:
         self.player = pygame.sprite.GroupSingle()
         self.stairs = pygame.sprite.GroupSingle()
         self.celsius = pygame.sprite.GroupSingle()
+        self.chatgpt = pygame.sprite.GroupSingle()
 
         for row_index, row in enumerate(layout):
             for col_index, cell in enumerate(row):
@@ -58,12 +59,13 @@ class Level:
                 elif cell == 'S':
                     tile = Celsius((x,y), tile_size)
                     self.celsius.add(tile)
+                elif cell == 'G':
+                    tile = Chatgpt((x,y), tile_size)
+                    self.chatgpt.add(tile)
                 elif cell == "L":
                     staircase = Stairs((x, y), tile_size)
                     self.stairs.add(staircase)
-                if cell == 'G':
-                    chatgpt = Chatgpt((x,y),tile_size)
-                    self.Chatgpt.add()
+                
 
     def scroll_x(self):
         player = self.player.sprite
@@ -106,6 +108,11 @@ class Level:
         for sprite in self.celsius.sprites():
             if sprite.rect.colliderect(player.rect):
                 player.boost = 2
+                sprite.kill()
+        
+        for sprite in self.chatgpt.sprites():
+            if sprite.rect.colliderect(player.rect):
+                player.dashes += 1
                 sprite.kill()
                 
     
@@ -154,9 +161,14 @@ class Level:
         self.tiles.update(self.world_shift)
         self.tiles.draw(self.display_surface)
         self.scroll_x()
+        
         # draw celsius powerup 
         self.celsius.update(self.world_shift)
         self.celsius.draw(self.display_surface)
+        
+        # draw celsius powerup 
+        self.chatgpt.update(self.world_shift)
+        self.chatgpt.draw(self.display_surface)
         
         # draw player
         self.player.update()
