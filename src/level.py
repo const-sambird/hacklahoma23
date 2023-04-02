@@ -15,7 +15,6 @@ class Level:
 
         self.next_level = False
 
-
     def setup_level(self, layout):
         pygame.mixer.music.load('../music/world1.mp3')
         pygame.mixer.music.play(-1)
@@ -107,6 +106,11 @@ class Level:
         self.stairs.update(self.world_shift)
         self.stairs.draw(self.display_surface)
 
+        try:
+            self.go_stairs()
+        except:
+            pass
+
         # draw tiles
         self.tiles.update(self.world_shift)
         self.tiles.draw(self.display_surface)
@@ -117,5 +121,4 @@ class Level:
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
 
-        self.go_stairs()
         self.player.draw(self.display_surface)
