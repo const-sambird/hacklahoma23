@@ -2,7 +2,7 @@ import pygame
 from util import import_folder
 
 class Professor(pygame.sprite.Sprite):
-    def __init__(self, pos, size):
+    def __init__(self, pos):
         super().__init__()
         self.import_character_assets()
         self.frame_index = 0

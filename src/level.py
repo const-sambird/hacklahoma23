@@ -7,8 +7,12 @@ from celsius import Celsius
 from chatgpt import Chatgpt
 from professor import Professor
 
+import random
+
 songs = ['../music/world_1.mp3', '../music/world_2.mp3', '../music/cynthia.mp3']
 
+#from chatgpt import Chatgpt
+from boss import Boss
 
 class Level:
     def __init__(self, level_data, surface, level_index, lives):
@@ -50,6 +54,8 @@ class Level:
         self.stairs = pygame.sprite.GroupSingle()
         self.celsius = pygame.sprite.Group()
         self.chatgpt = pygame.sprite.Group()
+        self.celsius = pygame.sprite.GroupSingle()
+        self.boss = pygame.sprite.GroupSingle()
 
         for row_index, row in enumerate(layout):
             for col_index, cell in enumerate(row):
@@ -68,12 +74,17 @@ class Level:
                     tile = Chatgpt((x,y), tile_size)
                     self.chatgpt.add(tile)
                 elif cell == 'O':
-                    professors = Professor((x,y),tile_size)
-                    self.professors.add(professors) 
+                    professors = Professor((x,y))
+                    self.professors.add(professors)
                 elif cell == "L":
                     staircase = Stairs((x, y), tile_size)
                     self.stairs.add(staircase)
-                
+                elif cell == "B":
+                    boss_sprite = Boss((x, y))
+                    self.boss.add(boss_sprite)
+                # if cell == 'G':
+                #     chatgpt = Chatgpt((x,y),tile_size)
+                #     self.Chatgpt.add()
 
     def scroll_x(self):
         player = self.player.sprite
@@ -93,12 +104,12 @@ class Level:
     def horizontal_movement_collision(self):
         player = self.player.sprite
         professors = self.professors.sprites()
-        
+
         player.rect.x += player.direction.x * player.speed
 
         # have powerups expired?
         if pygame.time.get_ticks() - player.boosted_at > 3000:
-            player.boost = 1        
+            player.boost = 1
 
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(player.rect):
@@ -122,7 +133,7 @@ class Level:
                 player.boost = 2
                 player.boosted_at = pygame.time.get_ticks()
                 sprite.kill()
-        
+
         for sprite in self.chatgpt.sprites():
             if sprite.rect.colliderect(player.rect):
                 player.dashes += 1
@@ -131,6 +142,7 @@ class Level:
         # updates the direction and speed of each professor sprite
         for professor in self.professors.sprites():
                 professor.rect.x += professor.direction * professor.speed
+
         # collision function for professors
         for sprite in self.tiles.sprites():
             for professor in self.professors.sprites():
@@ -140,14 +152,51 @@ class Level:
                         professor.on_left = True
                         professor.on_right = False
                         professor.direction = -professor.direction
-                    
+
                     elif professor.direction > 0:
                         professor.rect.right = sprite.rect.left
                         professor.on_right = True
                         professor.on_left = False
                         professor.direction = -professor.direction
-                
-    
+
+        # updates the direction and speed of each professor sprite
+        for boss in self.boss.sprites():
+            boss.speed = random.randint(6,12)
+            boss.rect.x += boss.direction * boss.speed
+            for sprite in self.tiles.sprites():
+                if sprite.rect.colliderect(boss.rect):
+                    if boss.direction < 0:
+                        boss.rect.left = sprite.rect.right
+                        boss.on_left = True
+                        boss.on_right = False
+                        boss.direction = -boss.direction
+
+                    elif boss.direction > 0:
+                        boss.rect.right = sprite.rect.left
+                        boss.on_right = True
+                        boss.on_left = False
+                        boss.direction = -boss.direction
+
+            if player.rect.colliderect(boss.rect):
+
+                pygame.quit()
+
+        # # collision function for professors
+        # for sprite in self.tiles.sprites():
+        #     for boss in self.boss.sprites():
+        #         if sprite.rect.colliderect(boss.rect):
+        #             if boss.direction < 0:
+        #                 boss.rect.left = sprite.rect.right
+        #                 boss.on_left = True
+        #                 boss.on_right = False
+        #                 boss.direction = -boss.direction
+        #
+        #             elif boss.direction > 0:
+        #                 boss.rect.right = sprite.rect.left
+        #                 boss.on_right = True
+        #                 boss.on_left = False
+        #                 boss.direction = -boss.direction
+
     def vertical_movement_collision(self):
         player = self.player.sprite
         player.apply_gravity()
@@ -163,6 +212,12 @@ class Level:
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
                     player.on_ceiling = True
+
+        for boss in self.boss.sprites():
+            if boss.rect.colliderect(player.rect):
+                if player.direction.y > 0:
+                    boss.kill()
+                    player.jump()
         
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False
@@ -216,19 +271,23 @@ class Level:
         self.tiles.update(self.world_shift)
         self.tiles.draw(self.display_surface)
         self.scroll_x()
-        
+
         # draw celsius powerup 
         self.celsius.update(self.world_shift)
         self.celsius.draw(self.display_surface)
-        
-        # draw celsius powerup 
+
+        # draw celsius powerup
         self.chatgpt.update(self.world_shift)
         self.chatgpt.draw(self.display_surface)
-        
-         # draw professors 
+
+         # draw professors
         self.professors.update(self.world_shift)
         self.professors.draw(self.display_surface)
-        
+
+        # draw professor
+        self.boss.update(self.world_shift)
+        self.boss.draw(self.display_surface)
+
         # draw player
         self.player.update()
         self.horizontal_movement_collision()
