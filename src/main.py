@@ -3,6 +3,7 @@ from settings import *
 from tiles import Tile
 from level import Level
 
+
 pygame.mixer.pre_init(44100, -16, 1, 512)
 pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -18,7 +19,7 @@ y = (screen_height - image_height) / 2
 
 
 levels = [level_map_1, level_map_2, level_map_3, level_map_4, level_map_5]
-level_index = 5
+level_index = 1
 
 lives = 3
 level = Level(levels[level_index - 1], screen, level_index, lives)
@@ -27,6 +28,7 @@ level = Level(levels[level_index - 1], screen, level_index, lives)
 # Dictionary of level numbers and corresponding background image filenames
 backgrounds = {1: "../assets/backgrounds/devon floor 1.jpg", 2: "../assets/backgrounds/devon floor 2.jpg", 3: "../assets/backgrounds/devon floor 3.jpg", 4: "../assets/backgrounds/devon floor 4.jpg", 5: "../assets/backgrounds/902358-pixel-art-artwork-city-sunrise-skyline-cityscape.png"}
 background_img = pygame.image.load(backgrounds[level_index])
+
 
 while True:
     for event in pygame.event.get():
@@ -102,6 +104,6 @@ while True:
     font = pygame.font.Font('../assets/font.ttf', 64)
     game_over = font.render("Game Over", False, 'white')
     w, h = font.size("Game Over")
-    screen.blit(game_over, ((screen_width - w) // 2, (screen_height - h) // 2))
+    screen.blit(game_over, ((screen_width - w) // 2, (screen_height - h) // 2)) 
     pygame.display.update()
     clock.tick(60)
