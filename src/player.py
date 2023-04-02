@@ -78,6 +78,9 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
+        if keys[pygame.K_c]:
+            self.direction.x *= 5
+
         if keys[pygame.K_SPACE] and self.on_ground:
 
             pygame.mixer.Sound.play(self.jump_sound)
