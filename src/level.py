@@ -61,9 +61,9 @@ class Level:
                 elif cell == "L":
                     staircase = Stairs((x, y), tile_size)
                     self.stairs.add(staircase)
-                if cell == 'G':
-                    chatgpt = Chatgpt((x,y),tile_size)
-                    self.Chatgpt.add()
+                # if cell == 'G':
+                #     chatgpt = Chatgpt((x,y),tile_size)
+                #     self.Chatgpt.add()
 
     def scroll_x(self):
         player = self.player.sprite
