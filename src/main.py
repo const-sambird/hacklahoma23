@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, cv2
 from settings import *
 from tiles import Tile
 from level import Level
@@ -26,6 +26,20 @@ while True:
     clock.tick(60)
 
     if level.next_level:
+        cap = cv2.VideoCapture('../assets/cutscene.mov')
+        success, img = cap.read()
+        shape = img.shape[1::-1]
+        print(shape)
+        while success:
+            clock.tick(60)
+            success, img = cap.read()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    success = False
+            if not success:
+                break
+            screen.blit(pygame.image.frombuffer(img.tobytes(), shape, "BGR"), (0, 0))
+            pygame.display.update()
 
         if (level_index <= 5):
             level_index += 1
