@@ -6,6 +6,9 @@ from stairs import Stairs
 from celsius import Celsius
 from chatgpt import Chatgpt
 from professor import Professor
+from parkingservicesAI import ParkingServicesAI
+from parkingservicesticket import ParkingServiceTicket
+
 
 import random
 
@@ -55,7 +58,8 @@ class Level:
         self.stairs = pygame.sprite.GroupSingle()
         self.celsius = pygame.sprite.Group()
         self.chatgpt = pygame.sprite.Group()
-        self.celsius = pygame.sprite.GroupSingle()
+        self.parkingServicesAI = pygame.sprite.Group()
+        self.parkingServiceTicket= pygame.sprite.Group()
         self.boss = pygame.sprite.GroupSingle()
 
         for row_index, row in enumerate(layout):
@@ -75,8 +79,15 @@ class Level:
                     tile = Chatgpt((x,y), tile_size)
                     self.chatgpt.add(tile)
                 elif cell == 'O':
-                    professors = Professor((x,y))
-                    self.professors.add(professors)
+                    professors = Professor((x,y),tile_size)
+                    self.professors.add(professors) 
+                elif cell == 'A':
+                    parkingServicesAI = ParkingServicesAI((x,y),tile_size)
+                    self.parkingServicesAI.add(parkingServicesAI) 
+                # make rng
+                elif cell == 'A':
+                    parkingServiceTicket = ParkingServiceTicket(ParkingServiceTicket(x-1,y),tile_size)
+                    self.parkingServiceTicket.add(parkingServiceTicket) 
                 elif cell == "L":
                     staircase = Stairs((x, y), tile_size)
                     self.stairs.add(staircase)
@@ -104,8 +115,7 @@ class Level:
 
     def horizontal_movement_collision(self):
         player = self.player.sprite
-        professors = self.professors.sprites()
-
+        
         player.rect.x += player.direction.x * player.speed
 
         # have powerups expired?
@@ -159,6 +169,19 @@ class Level:
                         professor.on_right = True
                         professor.on_left = False
                         professor.direction = -professor.direction
+        # updates the direction and speed of each professor sprite
+        for parkingServiceTicket in self.parkingServiceTicket.sprites():
+                parkingServiceTicket.rect.x += parkingServiceTicket.direction * parkingServiceTicket.speed
+        
+        # collsion funtion for tickets
+        for sprite in self.tiles.sprites():
+            for parkingServiceTicket in self.parkingServiceTicket.sprites():
+                if sprite.rect.colliderect(parkingServiceTicket.rect):
+                    parkingServiceTicket.kill()
+                    parkingServiceTicket.here = 0
+            
+        
+    
 
         # updates the direction and speed of each professor sprite
         for boss in self.boss.sprites():
@@ -283,6 +306,15 @@ class Level:
          # draw professors
         self.professors.update(self.world_shift)
         self.professors.draw(self.display_surface)
+        
+        # draw parking service 
+        self.parkingServicesAI.update(self.world_shift)
+        self.parkingServicesAI.draw(self.display_surface)
+        
+        # draw parking service ticket
+        self.parkingServiceTicket.update(self.world_shift)
+        self.parkingServiceTicket.draw(self.display_surface)
+        
 
         # draw professor
         self.boss.update(self.world_shift)
