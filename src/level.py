@@ -7,7 +7,7 @@ from celsius import Celsius
 from chatgpt import Chatgpt
 from professor import Professor
 from parkingservicesAI import ParkingServicesAI
-from parkingservicesticket import ParkingServiceTicket
+from parkingservicesTicket import ParkingServiceTicket
 
 
 import random
@@ -79,10 +79,10 @@ class Level:
                     tile = Chatgpt((x,y), tile_size)
                     self.chatgpt.add(tile)
                 elif cell == 'O':
-                    professors = Professor((x,y),tile_size)
+                    professors = Professor((x,y))
                     self.professors.add(professors) 
                 elif cell == 'A':
-                    parkingServicesAI = ParkingServicesAI((x,y),tile_size)
+                    parkingServicesAI = ParkingServicesAI((x,y), tile_size)
                     self.parkingServicesAI.add(parkingServicesAI) 
                 # make rng
                 elif cell == 'A':

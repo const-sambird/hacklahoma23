@@ -8,11 +8,14 @@ pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
 
+
 levels = [level_map_1, level_map_2, level_map_3, level_map_4, level_map_5]
 level_index = 5
 
 lives = 3
 level = Level(levels[level_index - 1], screen, level_index, lives)
+
+background_image = pygame.image.load("../assets/backgrounds/902358-pixel-art-artwork-city-sunrise-skyline-cityscape.png").convert()
 
 while True:
     for event in pygame.event.get():
@@ -20,7 +23,8 @@ while True:
             pygame.quit()
             sys.exit()
     
-    screen.fill('black')
+    screen.blit(background_image, (0, 0))
+    #screen.fill('black')
     level.run()
 
     pygame.display.update()
@@ -44,6 +48,9 @@ while True:
         if (level_index <= 5):
             level_index += 1
             level = Level(levels[level_index - 1], screen, level_index, lives)
+            #create array of backgrounds
+            #update background based on level_index
+            
     
     if level.dead:
         lives -= 1
