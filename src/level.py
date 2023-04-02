@@ -148,23 +148,23 @@ class Level:
                 
         # updates the direction and speed of each professor sprite
         for professor in self.professors.sprites():
-                professor.rect.x += professor.direction * professor.speed
+                professor.rect.x += professor.direction.x * professor.speed
 
         # collision function for professors
         for sprite in self.tiles.sprites():
             for professor in self.professors.sprites():
                 if sprite.rect.colliderect(professor.rect):
-                    if professor.direction < 0:
+                    if professor.direction.x < 0:
                         professor.rect.left = sprite.rect.right
                         professor.on_left = True
                         professor.on_right = False
-                        professor.direction = -professor.direction
+                        professor.direction.x = -professor.direction.x
 
-                    elif professor.direction > 0:
+                    elif professor.direction.x > 0:
                         professor.rect.right = sprite.rect.left
                         professor.on_right = True
                         professor.on_left = False
-                        professor.direction = -professor.direction
+                        professor.direction.x = -professor.direction.x
 
         # updates the direction and speed of each professor sprite
         for parkingServiceTicket in self.parkingServiceTicket.sprites():
@@ -232,6 +232,19 @@ class Level:
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
                     player.on_ceiling = True
+        
+        for professor in self.professors.sprites():
+            professor.apply_gravity()
+            for sprite in self.tiles.sprites():
+                if sprite.rect.colliderect(professor.rect):
+                    if professor.direction.y >= 0:
+                        professor.rect.bottom = sprite.rect.top
+                        professor.direction.y = 0
+                        professor.on_ground = True
+                    elif professor.direction.y < 0:
+                        professor.rect.top = sprite.rect.bottom
+                        professor.direction.y = 0
+                        professor.on_ceiling = True
 
         for boss in self.boss.sprites():
             if boss.rect.colliderect(player.rect):
@@ -306,8 +319,6 @@ class Level:
         except:
             pass
 
-        self.draw_overlay()
-
         # draw tiles
         self.tiles.update(self.world_shift)
         self.tiles.draw(self.display_surface)
@@ -345,4 +356,6 @@ class Level:
         self.horizontal_movement_collision()
 
         self.player.draw(self.display_surface)
+
+        self.draw_overlay() # THIS GOES LAST
         

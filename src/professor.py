@@ -11,7 +11,7 @@ class Professor(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = pos)
         
          # movement
-        self.direction = -1
+        self.direction = pygame.math.Vector2(-1, 0)
         self.speed = 4
         self.gravity = 0.8
 
@@ -35,6 +35,7 @@ class Professor(pygame.sprite.Sprite):
             self.frame_index = 0
         
         image = animation[int(self.frame_index)]
+        self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
 
         if self.on_left:
             self.image = image
@@ -42,6 +43,10 @@ class Professor(pygame.sprite.Sprite):
             flipped_image = pygame.transform.flip(image, True, False)
             self.image = flipped_image
     
+    def apply_gravity(self):
+        self.direction.y += self.gravity
+        self.rect.y += self.direction.y
+
     def update(self, x_shift):
         self.rect.x += x_shift
         self.animate()
