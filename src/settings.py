@@ -12,18 +12,57 @@ level_map_1 = [
 ]
 
 level_map_2 = [
-'                                              ',
-'                                              ',
-'                                              ',
-'                                              ',
-'                                              ',
-'                                              ',
-'                                              ',
-'           P                                  ',
-'                                            L ',
-' XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX '
+'X                                            X',
+'X                                            X',
+'X                                            X',
+'X                                            X',
+'X                                            X',
+'X                                            X',
+'X              X                             X',
+'X             XXX                            X',
+'X P          XXXXX                          LX',
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 ]
 
-tile_size = 64
+level_map_3 = [
+'X                                            X',
+'X                                            X',
+'X                                            X',
+'X                                            X',
+'X                                            X',
+'X                                            X',
+'X                                            X',
+'X             XX       X   XX                X',
+'X P          XXX       XX        XXX        LX',
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+]
+
+level_map_4 = [
+'X                                            X',
+'X      X        X                            X',
+'X      X        X   X                        X',
+'X      X        X   X                        X',
+'X                                            X',
+'X      X   X        X                        X',
+'X      X   X        X  XXX                   X',
+'X      X   X        X                        X',
+'X P                                         LX',
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+]
+
+level_map_5 = [
+'X                               X',
+'X                               X',
+'X                               X',
+'X                               X',
+'X                               X',
+'X                               X',
+'X                               X',
+'X                               X',
+'X P                             X',
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+]
+
+tile_size = 72
 screen_width = 1200
 screen_height = len(level_map_1) * tile_size
