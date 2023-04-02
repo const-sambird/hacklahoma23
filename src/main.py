@@ -11,9 +11,8 @@ clock = pygame.time.Clock()
 levels = [level_map_1, level_map_2, level_map_3, level_map_4, level_map_5]
 level_index = 5
 
-level = Level(levels[level_index - 1], screen, level_index)
-
-lives = 5
+lives = 3
+level = Level(levels[level_index - 1], screen, level_index, lives)
 
 while True:
     for event in pygame.event.get():
@@ -44,7 +43,7 @@ while True:
 
         if (level_index <= 5):
             level_index += 1
-            level = Level(levels[level_index - 1], screen, level_index)
+            level = Level(levels[level_index - 1], screen, level_index, lives)
     
     if level.dead:
         lives -= 1

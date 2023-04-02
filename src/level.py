@@ -28,6 +28,7 @@ class Level:
         self.lives = lives
 
         self.next_level = False
+        self.dead = False
 
     def load_assets(self):
         if (self.level_index == 1):
@@ -178,8 +179,7 @@ class Level:
                         boss.direction = -boss.direction
 
             if player.rect.colliderect(boss.rect):
-
-                pygame.quit()
+                self.go_die()
 
         # # collision function for professors
         # for sprite in self.tiles.sprites():
@@ -250,9 +250,9 @@ class Level:
         lives_text = self.font.render("LIFE " + str(lives), False, 'white')
         tick_text = self.font.render("TICK " + str(tick), False, 'white')
 
-        self.display_surface.blit(dashes_text, (screen_width / 8, 25))
-        self.display_surface.blit(lives_text, (3 * screen_width / 8, 25))
-        self.display_surface.blit(tick_text, (5 * screen_width / 8, 25))
+        self.display_surface.blit(dashes_text, (screen_width / 8, 100))
+        self.display_surface.blit(lives_text, (3 * screen_width / 8, 100))
+        self.display_surface.blit(tick_text, (5 * screen_width / 8, 100))
 
 
 
