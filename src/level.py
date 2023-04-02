@@ -3,6 +3,7 @@ from tiles import Tile
 from player import Player
 from settings import tile_size, screen_width
 from stairs import Stairs
+from celsius import Celsius
 
 
 class Level:
@@ -23,6 +24,7 @@ class Level:
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.stairs = pygame.sprite.GroupSingle()
+        self.celsius = pygame.sprite.GroupSingle()
 
         for row_index, row in enumerate(layout):
             for col_index, cell in enumerate(row):
@@ -37,6 +39,9 @@ class Level:
                 if cell == "L":
                     staircase = Stairs((x, y), tile_size)
                     self.stairs.add(staircase)
+                if cell == 'S':
+                    celsius = Celsius((x,y),tile_size)
+                    self.celsius.add(celsius)
 
     def scroll_x(self):
         player = self.player.sprite
@@ -55,7 +60,10 @@ class Level:
 
     def horizontal_movement_collision(self):
         player = self.player.sprite
+        celsius = self.celsius.sprite
+        
         player.rect.x += player.direction.x * player.speed
+        
 
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(player.rect):
@@ -72,6 +80,13 @@ class Level:
             player.on_left = False
         elif player.on_right and (player.rect.right > self.current_x or player.direction.x <= 0):
             player.on_right = False
+        
+        # collision with powerup
+        for sprite in self.celsius.sprites():
+            if sprite.rect.colliderect(player.rect):
+                sprite.kill()
+                player.speed = player.speed * 2 
+                
     
     def vertical_movement_collision(self):
         player = self.player.sprite
@@ -93,7 +108,8 @@ class Level:
             player.on_ground = False
         if player.on_ceiling and player.direction.y > 0:
             player.on_ceiling = False
-
+                
+    
     def go_stairs(self):
         player = self.player.sprite
 
