@@ -1,6 +1,6 @@
 import pygame
 
-class Chatgpt(pygame.sprite.Sprite):
+class Chatgpt(pygame.sprite.Sprite): # powerup for dashing
     def __init__(self, pos, size):
         super().__init__()
         self.image = pygame.image.load('../assets/tiles/chatgpt.png').convert_alpha()

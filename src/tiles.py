@@ -1,6 +1,6 @@
 import pygame
 
-class Tile(pygame.sprite.Sprite):
+class Tile(pygame.sprite.Sprite): # foundation for the game
     def __init__(self, pos, size):
         super().__init__()
         self.image = pygame.Surface((size, size))

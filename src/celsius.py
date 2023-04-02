@@ -1,7 +1,7 @@
 import pygame
 
 
-class Celsius(pygame.sprite.Sprite):
+class Celsius(pygame.sprite.Sprite): # powerup to increase speed
     def __init__(self, pos, size):
         super().__init__()
         self.image = pygame.image.load('../assets/tiles/celsius.png').convert_alpha()
