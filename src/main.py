@@ -63,11 +63,30 @@ while True:
             background_img = pygame.image.load(backgrounds[level_index])
             screen.blit(background_img, (x,y))
             pygame.display.update()
-            
+
+    if level.boss_dead:
+
+        pygame.mixer.pause()
+        cap = cv2.VideoCapture('../assets/death.mov')
+        success, img = cap.read()
+        shape = img.shape[1::-1]
+        while success:
+            clock.tick(30)
+            success, img = cap.read()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    success = False
+            if not success:
+                break
+            screen.blit(pygame.image.frombuffer(img.tobytes(), shape, "BGR"), (0, 0))
+            pygame.display.update()
+
+        level.boss_dead = False
+        level.spawn_Josh()
     
     if level.dead:
         lives -= 1
-        level_index = 1
+        #level_index = 1
         level = Level(levels[level_index - 1], screen, level_index, lives)
         background_img = pygame.image.load(backgrounds[level_index])
         screen.blit(background_img, (x,y))

@@ -10,6 +10,7 @@ from professor import Professor
 from parkingservicesAI import ParkingServicesAI
 from parkingservicesTicket import ParkingServiceTicket
 from boss import Boss
+from josh import Josh
 
 import random
 
@@ -32,6 +33,9 @@ class Level:
         self.next_level = False
         self.dead = False
 
+        self.boss_dead = False
+
+
     def load_assets(self):
         if (self.level_index == 1):
             pygame.mixer.music.load('../music/world_1.mp3')
@@ -45,6 +49,8 @@ class Level:
             pygame.mixer.music.load('../music/cynthia.mp3')
         
         self.font = pygame.font.Font('../assets/font.ttf', 32)
+
+        self.pain_sound = pygame.mixer.Sound("../music/pain.mp3")
 
         pygame.mixer.music.play(-1)
 
@@ -60,6 +66,7 @@ class Level:
         self.parkingServicesAI = pygame.sprite.Group()
         self.parkingServiceTicket = pygame.sprite.Group()
         self.boss = pygame.sprite.GroupSingle()
+        self.josh = pygame.sprite.GroupSingle()
 
         for row_index, row in enumerate(layout):
             for col_index, cell in enumerate(row):
@@ -248,20 +255,27 @@ class Level:
                         professor.direction.y = 0
                         professor.on_ceiling = True
 
+        for professor in self.professors.sprites():
+            if professor.rect.colliderect(player.rect):
+                if player.direction.y > 0:
+                    player.jump()
+                    pygame.mixer.Sound.play(self.pain_sound)
+                    professor.kill()
+
         for boss in self.boss.sprites():
             if boss.rect.colliderect(player.rect):
                 if player.direction.y > 0:
                     player.jump()
                     if (boss.health == 1):
+                        self.boss_dead = True
+                        pygame.mixer.Sound.play(self.pain_sound)
                         boss.kill()
                     else:
+                        pygame.mixer.Sound.play(self.pain_sound)
                         boss.health -= 1
 
-        for professor in self.professors.sprites():
-            if professor.rect.colliderect(player.rect):
-                if player.direction.y > 0:
-                    player.jump()
-                    professor.kill()
+
+
 
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False
@@ -279,7 +293,16 @@ class Level:
             self.next_level = True
             pygame.mixer.pause()
             #print(main.level_number)
-    
+
+    def spawn_Josh(self):
+
+        x = 26 * tile_size;
+        y = 8 * tile_size;
+
+        josh_sprite = Josh((x, y))
+        self.josh.add(josh_sprite)
+
+
     def go_die(self):
         self.dead = True
         pygame.mixer.pause()
@@ -324,6 +347,12 @@ class Level:
 
         try:
             self.go_stairs()
+        except:
+            pass
+
+        try:
+            self.josh.update(self.world_shift)
+            self.josh.draw(self.display_surface)
         except:
             pass
 
