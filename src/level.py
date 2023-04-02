@@ -228,7 +228,10 @@ class Level:
 
     def vertical_movement_collision(self):
         player = self.player.sprite
+        josh = self.josh.sprite
         player.apply_gravity()
+        if josh:
+            josh.apply_gravity()
 
 
         for sprite in self.tiles.sprites():
@@ -241,6 +244,17 @@ class Level:
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
                     player.on_ceiling = True
+            if josh and sprite.rect.colliderect(josh.rect):
+                if josh.direction.y > 0:
+                    josh.rect.bottom = sprite.rect.top
+                    josh.direction.y = 0
+                    josh.on_ground = True
+                elif josh.direction.y < 0:
+                    josh.rect.top = sprite.rect.bottom
+                    josh.direction.y = 0
+                    josh.on_ceiling = True
+            
+
         
         for professor in self.professors.sprites():
             professor.apply_gravity()
@@ -296,7 +310,7 @@ class Level:
 
     def spawn_Josh(self):
 
-        x = 24 * tile_size
+        x = 12 * tile_size
         y = 8 * tile_size
 
         josh_sprite = Josh((x, y))
@@ -350,11 +364,8 @@ class Level:
         except:
             pass
 
-        try:
-            self.josh.update(self.world_shift)
-            self.josh.draw(self.display_surface)
-        except:
-            pass
+        self.josh.update(self.world_shift)
+        self.josh.draw(self.display_surface)
 
         # draw tiles
         self.tiles.update(self.world_shift)
