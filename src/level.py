@@ -288,11 +288,11 @@ class Level:
         player = self.player.sprite
         dashes = player.dashes
         lives = self.lives
-        tick = pygame.time.get_ticks() # replace
+        level = self.level_index
 
         dashes_text = self.font.render("DASH " + str(dashes), False, 'white')
         lives_text = self.font.render("LIFE " + str(lives), False, 'white')
-        tick_text = self.font.render("TICK " + str(tick), False, 'white')
+        tick_text = self.font.render("FLOOR " + str(level), False, 'white')
 
 
         self.display_surface.blit(dashes_text, (screen_width / 8, 100))

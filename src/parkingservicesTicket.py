@@ -12,7 +12,7 @@ class ParkingServiceTicket(pygame.sprite.Sprite):
         
          # movement
         self.direction = -1
-        self.speed = 12
+        self.speed = 6
         
         # functionality 
         self.here = 1 # checks if the ticket has been killed
