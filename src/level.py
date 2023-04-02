@@ -11,6 +11,7 @@ from parkingservicesAI import ParkingServicesAI
 from parkingservicesTicket import ParkingServiceTicket
 from boss import Boss
 from josh import Josh
+from server import sendScore
 
 import random
 
@@ -34,6 +35,7 @@ class Level:
         self.dead = False
 
         self.boss_dead = False
+        self.finish_level = False
 
 
     def load_assets(self):
@@ -210,6 +212,13 @@ class Level:
             if player.rect.colliderect(boss.rect) and player.direction.y >= 0:
                 self.go_die()
 
+        for josh in self.josh.sprites():
+            if josh.rect.colliderect(player.rect):
+                self.finish_level = True
+                #print(pygame.time.get_ticks())
+                sendScore(pygame.time.get_ticks())
+
+
         # # collision function for professors
         # for sprite in self.tiles.sprites():
         #     for boss in self.boss.sprites():
@@ -309,9 +318,10 @@ class Level:
             #print(main.level_number)
 
     def spawn_Josh(self):
+        player = self.player.sprite
 
         x = 12 * tile_size
-        y = 8 * tile_size
+        y = 6 * tile_size
 
         josh_sprite = Josh((x, y))
         self.josh.add(josh_sprite)
@@ -331,7 +341,6 @@ class Level:
         lives_text = self.font.render("LIFE " + str(lives), False, 'white')
         tick_text = self.font.render("FLOOR " + str(level), False, 'white')
 
-
         self.display_surface.blit(dashes_text, (screen_width / 8, 100))
         self.display_surface.blit(lives_text, (3 * screen_width / 8, 100))
         self.display_surface.blit(tick_text, (5 * screen_width / 8, 100))
@@ -346,6 +355,11 @@ class Level:
         if (player.boost == 2):
             celsius_text = self.font.render("CELSIUS", False, 'grey')
             self.display_surface.blit(celsius_text, (screen_width / 8, 50))
+
+        if (self.finish_level):
+            nice_text = self.font.render("NICE", False, 'red')
+            self.display_surface.blit(nice_text, (screen_width / 2, 50))
+            pygame.quit()
 
     def throw_ticket(self):
         for sprite in self.parkingServicesAI.sprites():
