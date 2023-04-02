@@ -4,6 +4,7 @@ from player import Player
 from settings import tile_size, screen_width
 from stairs import Stairs
 
+
 class Level:
     def __init__(self, level_data, surface):
         self.display_surface = surface
@@ -11,6 +12,8 @@ class Level:
 
         self.world_shift = 0
         self.current_x = 0
+
+        self.next_level = False
 
 
     def setup_level(self, layout):
@@ -97,10 +100,10 @@ class Level:
         stair_sprite = self.stairs.sprites()[0]
 
         if stair_sprite.rect.colliderect(player.rect):
-            print("test collide stairs")
+            self.next_level = True
+            #print(main.level_number)
 
     def run(self):
-
         self.stairs.update(self.world_shift)
         self.stairs.draw(self.display_surface)
 
