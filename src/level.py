@@ -180,8 +180,6 @@ class Level:
 
             if parkingServiceTicket.rect.colliderect(player.rect):
                 self.go_die()
-            
-        
     
 
         # updates the direction and speed of each professor sprite
