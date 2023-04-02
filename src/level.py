@@ -317,7 +317,7 @@ class Level:
             roll = randint(1, 100)
             # print(roll)
             if roll == 4:
-                ticket = ParkingServiceTicket((sprite.rect.x - tile_size, sprite.rect.y), tile_size)
+                ticket = ParkingServiceTicket((sprite.rect.x, sprite.rect.y), tile_size)
                 self.parkingServiceTicket.add(ticket)
 
     def run(self):
@@ -353,6 +353,7 @@ class Level:
         # draw parking service ticket
         self.throw_ticket()
         self.parkingServiceTicket.draw(self.display_surface)
+        self.parkingServiceTicket.update(self.world_shift)
         
 
         # draw professor
