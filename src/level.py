@@ -84,7 +84,10 @@ class Level:
         player = self.player.sprite
         
         player.rect.x += player.direction.x * player.speed
-        
+
+        # have powerups expired?
+        if pygame.time.get_ticks() - player.boosted_at > 3000:
+            player.boost = 1        
 
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(player.rect):
@@ -106,6 +109,7 @@ class Level:
         for sprite in self.celsius.sprites():
             if sprite.rect.colliderect(player.rect):
                 player.boost = 2
+                player.boosted_at = pygame.time.get_ticks()
                 sprite.kill()
                 
     
