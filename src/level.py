@@ -41,6 +41,7 @@ class Level:
     def setup_level(self, layout):
 
         self.tiles = pygame.sprite.Group()
+        self.professors = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.stairs = pygame.sprite.GroupSingle()
         self.celsius = pygame.sprite.GroupSingle()
