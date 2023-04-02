@@ -296,8 +296,8 @@ class Level:
 
     def spawn_Josh(self):
 
-        x = 26 * tile_size;
-        y = 8 * tile_size;
+        x = 24 * tile_size
+        y = 8 * tile_size
 
         josh_sprite = Josh((x, y))
         self.josh.add(josh_sprite)
