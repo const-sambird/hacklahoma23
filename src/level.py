@@ -5,6 +5,7 @@ from settings import tile_size, screen_width
 from stairs import Stairs
 from celsius import Celsius
 from chatgpt import Chatgpt
+from professor import Professor
 
 songs = ['../music/world_1.mp3', '../music/world_2.mp3', '../music/cynthia.mp3']
 
@@ -44,8 +45,8 @@ class Level:
         self.professors = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.stairs = pygame.sprite.GroupSingle()
-        self.celsius = pygame.sprite.GroupSingle()
-        self.chatgpt = pygame.sprite.GroupSingle()
+        self.celsius = pygame.sprite.Group()
+        self.chatgpt = pygame.sprite.Group()
 
         for row_index, row in enumerate(layout):
             for col_index, cell in enumerate(row):
@@ -63,12 +64,13 @@ class Level:
                 elif cell == 'G':
                     tile = Chatgpt((x,y), tile_size)
                     self.chatgpt.add(tile)
+                elif cell == 'O':
+                    professors = Professor((x,y),tile_size)
+                    self.professors.add(professors) 
                 elif cell == "L":
                     staircase = Stairs((x, y), tile_size)
                     self.stairs.add(staircase)
-                # if cell == 'G':
-                #     chatgpt = Chatgpt((x,y),tile_size)
-                #     self.Chatgpt.add()
+                
 
     def scroll_x(self):
         player = self.player.sprite
@@ -87,6 +89,7 @@ class Level:
 
     def horizontal_movement_collision(self):
         player = self.player.sprite
+        professors = self.professors.sprites()
         
         player.rect.x += player.direction.x * player.speed
 
@@ -122,6 +125,25 @@ class Level:
                 player.dashes += 1
                 sprite.kill()
                 
+        # updates the direction and speed of each professor sprite
+        for professor in self.professors.sprites():
+                professor.rect.x += professor.direction * professor.speed
+        # collision function for professors
+        for sprite in self.tiles.sprites():
+            for professor in self.professors.sprites():
+                if sprite.rect.colliderect(professor.rect):
+                    if professor.direction < 0:
+                        professor.rect.left = sprite.rect.right
+                        professor.on_left = True
+                        self.current_x = professor.rect.left
+                        professor.direction = -professor.direction
+                    
+                    elif professor.direction > 0:
+                        professor.rect.right = sprite.rect.left
+                        professor.on_Right = True
+                        self.current_x = professor.rect.right
+                        professor.direction = -professor.direction
+                
     
     def vertical_movement_collision(self):
         player = self.player.sprite
@@ -143,7 +165,8 @@ class Level:
             player.on_ground = False
         if player.on_ceiling and player.direction.y > 0:
             player.on_ceiling = False
-                
+
+        # need a collision function for professors
     
     def go_stairs(self):
         player = self.player.sprite
@@ -176,6 +199,10 @@ class Level:
         # draw celsius powerup 
         self.chatgpt.update(self.world_shift)
         self.chatgpt.draw(self.display_surface)
+        
+         # draw professors 
+        self.professors.update(self.world_shift)
+        self.professors.draw(self.display_surface)
         
         # draw player
         self.player.update()
