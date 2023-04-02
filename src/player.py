@@ -31,6 +31,8 @@ class Player(pygame.sprite.Sprite):
         for animation in self.animations.keys():
             full_path = character_path + animation
             self.animations[animation] = import_folder(full_path)
+        
+        self.jump_sound = pygame.mixer.Sound("../music/jump.mp3")
 
     def animate(self):
         animation = self.animations[self.state]
@@ -77,9 +79,8 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 0
 
         if keys[pygame.K_SPACE] and self.on_ground:
-            jump_sound = pygame.mixer.Sound("../music/jump.mp3")
 
-            pygame.mixer.Sound.play(jump_sound)
+            pygame.mixer.Sound.play(self.jump_sound)
 
             self.jump()
     

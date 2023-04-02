@@ -3,6 +3,7 @@ from settings import *
 from tiles import Tile
 from level import Level
 
+pygame.mixer.pre_init(44100, -16, 1, 512)
 pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
