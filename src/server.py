@@ -1,7 +1,7 @@
 import requests
 
-def sendScore(ticks_data):
-    requests.post("https://nguyentendo.sambird.dev/api/score", data = ticks_data)
+def sendScore(user, ticks_data):
+    requests.post("https://nguyentendo.sambird.dev/api/score", data = {"api_key" : user, "score" : ticks_data})
 
 # from flask import Flask
 # from flask import request

@@ -4,6 +4,8 @@ from tiles import Tile
 from level import Level
 
 
+api_key = input("WHATS YOUR USER ID\n")
+
 pygame.mixer.pre_init(44100, -16, 1, 512)
 pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -19,15 +21,16 @@ y = (screen_height - image_height) / 2
 
 
 levels = [level_map_1, level_map_2, level_map_3, level_map_4, level_map_5]
-level_index = 1
+level_index = 5
 
 lives = 5
-level = Level(levels[level_index - 1], screen, level_index, lives)
+level = Level(levels[level_index - 1], screen, level_index, lives, api_key)
 
 
 # Dictionary of level numbers and corresponding background image filenames
 backgrounds = {1: "../assets/backgrounds/devon floor 1.jpg", 2: "../assets/backgrounds/devon floor 2.jpg", 3: "../assets/backgrounds/devon floor 3.jpg", 4: "../assets/backgrounds/devon floor 4.jpg", 5: "../assets/backgrounds/902358-pixel-art-artwork-city-sunrise-skyline-cityscape.png"}
 background_img = pygame.image.load(backgrounds[level_index])
+
 
 
 while True:
@@ -60,7 +63,7 @@ while True:
 
         if (level_index <= 5):
             level_index += 1
-            level = Level(levels[level_index - 1], screen, level_index, lives)
+            level = Level(levels[level_index - 1], screen, level_index, lives, api_key)
             # Load background image based on current level number
             background_img = pygame.image.load(backgrounds[level_index])
             screen.blit(background_img, (x,y))
@@ -89,7 +92,7 @@ while True:
     if level.dead:
         lives -= 1
         #level_index = 1
-        level = Level(levels[level_index - 1], screen, level_index, lives)
+        level = Level(levels[level_index - 1], screen, level_index, lives, api_key)
         background_img = pygame.image.load(backgrounds[level_index])
         screen.blit(background_img, (x,y))
         if lives < 1:

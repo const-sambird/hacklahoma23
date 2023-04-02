@@ -19,7 +19,7 @@ songs = ['../music/world_1.mp3', '../music/world_2.mp3', '../music/cynthia.mp3']
 
 
 class Level:
-    def __init__(self, level_data, surface, level_index, lives):
+    def __init__(self, level_data, surface, level_index, lives, api_key):
         self.display_surface = surface
         self.level_index = level_index
 
@@ -36,6 +36,8 @@ class Level:
 
         self.boss_dead = False
         self.finish_level = False
+
+        self.user = api_key
 
 
     def load_assets(self):
@@ -218,7 +220,7 @@ class Level:
             if josh.rect.colliderect(player.rect):
                 self.finish_level = True
                 #print(pygame.time.get_ticks())
-                sendScore(pygame.time.get_ticks())
+                sendScore(self.user, pygame.time.get_ticks())
 
 
         # # collision function for professors
