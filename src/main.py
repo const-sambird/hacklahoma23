@@ -26,7 +26,7 @@ level = Level(levels[level_index - 1], screen, level_index, lives)
 
 # Dictionary of level numbers and corresponding background image filenames
 backgrounds = {1: "../assets/backgrounds/devon floor 1.jpg", 2: "../assets/backgrounds/devon floor 2.jpg", 3: "../assets/backgrounds/devon floor 3.jpg", 4: "../assets/backgrounds/devon floor 4.jpg", 5: "../assets/backgrounds/902358-pixel-art-artwork-city-sunrise-skyline-cityscape.png"}
-background_img = pygame.image.load(backgrounds[1])
+background_img = pygame.image.load(backgrounds[level_index])
 
 while True:
     for event in pygame.event.get():
@@ -69,6 +69,8 @@ while True:
         lives -= 1
         level_index = 1
         level = Level(levels[level_index - 1], screen, level_index, lives)
+        background_img = pygame.image.load(backgrounds[level_index])
+        screen.blit(background_img, (x,y))
         if lives < 1:
             break
 
