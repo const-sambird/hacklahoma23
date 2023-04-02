@@ -10,9 +10,9 @@ clock = pygame.time.Clock()
 
 
 levels = [level_map_1, level_map_2, level_map_3, level_map_4, level_map_5]
-level_index = 5
+level_index = 1
 
-lives = 1
+lives = 3
 level = Level(levels[level_index - 1], screen, level_index, lives)
 
 background_image = pygame.image.load("../assets/backgrounds/902358-pixel-art-artwork-city-sunrise-skyline-cityscape.png").convert()

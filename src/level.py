@@ -148,11 +148,10 @@ class Level:
                 
         # updates the direction and speed of each professor sprite
         for professor in self.professors.sprites():
-                professor.rect.x += professor.direction * professor.speed
+            professor.rect.x += professor.direction * professor.speed
 
-        # collision function for professors
-        for sprite in self.tiles.sprites():
-            for professor in self.professors.sprites():
+            # collision function for professors
+            for sprite in self.tiles.sprites():
                 if sprite.rect.colliderect(professor.rect):
                     if professor.direction < 0:
                         professor.rect.left = sprite.rect.right
@@ -165,6 +164,9 @@ class Level:
                         professor.on_right = True
                         professor.on_left = False
                         professor.direction = -professor.direction
+
+            if professor.rect.colliderect(player.rect) and player.direction.y >= 0:
+                self.go_die()
 
         # updates the direction and speed of each professor sprite
         for parkingServiceTicket in self.parkingServiceTicket.sprites():
@@ -241,6 +243,12 @@ class Level:
                         boss.kill()
                     else:
                         boss.health -= 1
+
+        for professor in self.professors.sprites():
+            if professor.rect.colliderect(player.rect):
+                if player.direction.y > 0:
+                    player.jump()
+                    professor.kill()
 
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False
