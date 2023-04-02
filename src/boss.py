@@ -16,6 +16,8 @@ class Boss(pygame.sprite.Sprite):
         self.speed = 4
         self.gravity = 0.8
 
+        self.health = 3
+
         # appearance
         self.state = 'idle'
         self.facing_right = False

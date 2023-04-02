@@ -9,14 +9,12 @@ from chatgpt import Chatgpt
 from professor import Professor
 from parkingservicesAI import ParkingServicesAI
 from parkingservicesTicket import ParkingServiceTicket
-
+from boss import Boss
 
 import random
 
 songs = ['../music/world_1.mp3', '../music/world_2.mp3', '../music/cynthia.mp3']
 
-#from chatgpt import Chatgpt
-from boss import Boss
 
 class Level:
     def __init__(self, level_data, surface, level_index, lives):
@@ -167,6 +165,7 @@ class Level:
                         professor.on_right = True
                         professor.on_left = False
                         professor.direction = -professor.direction
+
         # updates the direction and speed of each professor sprite
         for parkingServiceTicket in self.parkingServiceTicket.sprites():
                 parkingServiceTicket.rect.x += parkingServiceTicket.direction * parkingServiceTicket.speed
@@ -199,7 +198,7 @@ class Level:
                         boss.on_left = False
                         boss.direction = -boss.direction
 
-            if player.rect.colliderect(boss.rect):
+            if player.rect.colliderect(boss.rect) and player.direction.y >= 0:
                 self.go_die()
 
         # # collision function for professors
@@ -237,9 +236,12 @@ class Level:
         for boss in self.boss.sprites():
             if boss.rect.colliderect(player.rect):
                 if player.direction.y > 0:
-                    boss.kill()
                     player.jump()
-        
+                    if (boss.health == 1):
+                        boss.kill()
+                    else:
+                        boss.health -= 1
+
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False
         if player.on_ceiling and player.direction.y > 0:
@@ -271,9 +273,21 @@ class Level:
         lives_text = self.font.render("LIFE " + str(lives), False, 'white')
         tick_text = self.font.render("TICK " + str(tick), False, 'white')
 
+
         self.display_surface.blit(dashes_text, (screen_width / 8, 100))
         self.display_surface.blit(lives_text, (3 * screen_width / 8, 100))
         self.display_surface.blit(tick_text, (5 * screen_width / 8, 100))
+
+        if (self.level_index == 5):
+            try:
+                boss_text = self.font.render("BOSS HP: " + str(self.boss.sprites()[0].health), False, 'red')
+                self.display_surface.blit(boss_text, (5 * screen_width / 8, 50))
+            except:
+                pass
+
+        if (player.boost == 2):
+            celsius_text = self.font.render("CELSIUS", False, 'grey')
+            self.display_surface.blit(celsius_text, (screen_width / 8, 50))
 
     def throw_ticket(self):
         for sprite in self.parkingServicesAI.sprites():
@@ -326,8 +340,9 @@ class Level:
 
         # draw player
         self.player.update()
-        self.horizontal_movement_collision()
+
         self.vertical_movement_collision()
+        self.horizontal_movement_collision()
 
         self.player.draw(self.display_surface)
         
